@@ -1,5 +1,3 @@
-import { getExternalBrowser } from "Shared/backgroundScripts/getters.js";
-
 const nativeApps = [
   "org.mozilla.firefox_bridge_nmh_dev",
   "org.mozilla.firefox_bridge_nmh_nightly",
