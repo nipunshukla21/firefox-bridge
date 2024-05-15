@@ -219,17 +219,3 @@ setting_event:
         description: The location that this setting was changed from
         type: string
     expires: never
-telemetry_event:
-  telemetry_id:
-    type: string
-    lifetime: ping
-    send_in_pings:
-      - events
-    description: The ID used to link the extensions and firefox together
-    bugs:
-      - https://github.com/mozilla-extensions/firefox-bridge/issues/87
-    data_reviews:
-      - https://github.com/mozilla-extensions/firefox-bridge/issues/87
-    notification_emails:
-      - dual-browser-owner@mozilla.com
-    expires: never

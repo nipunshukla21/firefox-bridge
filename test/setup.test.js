@@ -119,8 +119,7 @@ global.browser = {
     firefox_bridge: {
       getAvailableBrowsers: jest.fn(),
       getDefaultBrowser: jest.fn(),
-      launchBrowser: jest.fn(),
-      getTelemetryID: jest.fn(),
+      launchBrowser: jest.fn()
     },
   },
 };

@@ -6,7 +6,6 @@ import * as settingEvent from "../../generated/settingEvent.js";
 
 import { applyLocalization, replaceMessage } from "./localization.js";
 import { populateBrowserList } from "./browserList.js";
-import { getInstalledFirefoxVariant } from "Interfaces/getters.js";
 import { handleChangeDefaultLaunchContextMenuClick } from "Interfaces/contextMenus.js";
 
 import "Shared/backgroundScripts/polyfill.js";
@@ -188,9 +187,6 @@ export async function activatePlatformSpecificElements() {
     });
     checkChromiumHotkeys();
     checkPrivateBrowsing();
-    if (!(await getInstalledFirefoxVariant())) {
-      document.getElementById("error-notification").style.display = "flex";
-    }
   }
 }
 

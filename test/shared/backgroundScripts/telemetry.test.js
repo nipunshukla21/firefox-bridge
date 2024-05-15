@@ -11,7 +11,6 @@ describe("shared/backgroundScripts/telemetry.js", () => {
       setExtensionPlatform("firefox");
       await initTelemetryListeners();
       expect(browser.runtime.onStartup.addListener).toHaveBeenCalled();
-      expect(browser.storage.sync.onChanged.addListener).toHaveBeenCalled();
     });
   });
 });

@@ -1,6 +1,6 @@
 import {
   getInstalledFirefoxVariant,
-  getTelemetryID,
+  getDefaultIconPath,
 } from "../../../src/chromium/interfaces/getters.js";
 
 import { setStorage } from "../../setup.test.js";
@@ -61,55 +61,21 @@ describe("chromium/interfaces/getters.js", () => {
     });
   });
 
-  describe("getTelemetryID()", () => {
-    it("should return the telemetry ID", async () => {
-      // pass the validity test
-      browser.runtime.sendNativeMessage.mockResolvedValueOnce({
-        result_code: 0,
+  describe("getDefaultIconPath()", () => {
+    it("should return the firefox icon path", async () => {
+      await setStorage("currentExternalBrowser", "Firefox");
+      const result = await getDefaultIconPath();
+      expect(result).toStrictEqual({
+        32: browser.runtime.getURL("images/firefox/firefox32.png"),
       });
-      // mock the telemetry ID
-      browser.runtime.sendNativeMessage.mockResolvedValueOnce({
-        result_code: 0,
-        message: "sample_telemetry_id",
-      });
-      const result = await getTelemetryID();
-      expect(result).toBe("sample_telemetry_id");
     });
 
-    it("should return undefined if the telemetry ID cannot be retrieved", async () => {
-      // pass the validity test
-      browser.runtime.sendNativeMessage.mockResolvedValueOnce({
-        result_code: 0,
+    it("should return the firefox private icon path", async () => {
+      await setStorage("currentExternalBrowser", "Firefox Private Browsing");
+      const result = await getDefaultIconPath();
+      expect(result).toStrictEqual({
+        32: browser.runtime.getURL("images/firefox-private/private32.png"),
       });
-      // fail the telemetry ID retrieval
-      browser.runtime.sendNativeMessage.mockRejectedValueOnce({
-        result_code: 1,
-        message: "sample_error_message",
-      });
-
-      const result = await getTelemetryID();
-      expect(result).toBeFalsy();
-      expect(console.error).toHaveBeenCalledWith(
-        "Error getting telemetry ID:",
-        "sample_error_message",
-      );
-    });
-
-    it("should return undefined if all validity tests fails", async () => {
-      // fail the validity test
-      browser.runtime.sendNativeMessage.mockRejectedValue({
-        result_code: 1,
-        message: "sample_error_message",
-      });
-
-      const result = await getTelemetryID();
-      expect(result).toBeFalsy();
-      // called 5 times, once for storage NMH, once for each NMH variant after
-      expect(console.error).toHaveBeenCalledTimes(5);
-      expect(console.error).toHaveBeenCalledWith(
-        "Error getting NMH version:",
-        "sample_error_message",
-      );
     });
   });
 });

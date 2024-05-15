@@ -304,19 +304,6 @@ this.experiments_firefox_bridge = class extends ExtensionAPI {
             let win = Services.wm.getMostRecentWindow("navigator:browser");
             win.BrowserOpenAddonsMgr("addons://shortcuts/shortcuts");
           },
-
-          /**
-           * Gets the telemetry ID for the Firefox profile to link to the extension.
-           *
-           * @returns {Promise<string>} The telemetry ID
-           */
-          async getTelemetryID() {
-            let telemetryID = Services.prefs.getStringPref(
-              "browser.firefoxbridge.installId",
-              "",
-            );
-            return telemetryID;
-          },
         },
       },
     };

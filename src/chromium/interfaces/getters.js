@@ -1,3 +1,5 @@
+import { getExternalBrowser } from "Shared/backgroundScripts/getters.js";
+
 const nativeApps = [
   "org.mozilla.firefox_bridge_nmh_dev",
   "org.mozilla.firefox_bridge_nmh_nightly",
@@ -48,29 +50,17 @@ export async function getInstalledFirefoxVariant() {
 }
 
 /**
- * Using native messaging, ets the telemetry ID for the Firefox profile to
- * link to the extension.
+ * Get the non-greyed icon path for Firefox or Firefox Private.
  *
- * @returns {Promise<string>} The telemetry ID
+ * @returns {Promise<string>} The path to the non-greyed icon.
  */
-export async function getTelemetryID() {
-  const nativeApp = await getInstalledFirefoxVariant();
-  if (!nativeApp) {
-    return "";
+export async function getDefaultIconPath() {
+  if ((await getExternalBrowser()) === "Firefox") {
+    return {
+      32: browser.runtime.getURL("images/firefox/firefox32.png"),
+    };
   }
-
-  // Get the telemetry ID from the native messaging host.
-  try {
-    const response = await browser.runtime.sendNativeMessage(nativeApp, {
-      command: "GetInstallId",
-      data: {},
-    });
-    if (response.result_code !== 0) {
-      throw new Error(response.message);
-    }
-    return response.message;
-  } catch (error) {
-    console.error("Error getting telemetry ID:", error.message);
-    return "";
-  }
+  return {
+    32: browser.runtime.getURL("images/firefox-private/private32.png"),
+  };
 }

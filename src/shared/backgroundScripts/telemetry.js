@@ -2,7 +2,6 @@ import Glean from "@mozilla/glean/webext";
 import UAParser from "ua-parser-js";
 import * as startupEvent from "../generated/startupEvent.js";
 import * as telemetryEvent from "../generated/telemetryEvent.js";
-import { getTelemetryID } from "Interfaces/getters.js";
 
 import { getExternalBrowser, getTelemetryEnabled } from "./getters.js";
 
@@ -24,10 +23,6 @@ export async function initGlean(showLogs = false) {
     appDisplayVersion: browser.runtime.getManifest().version,
     appBuild: IS_FIREFOX_EXTENSION ? "firefox" : "chromium",
   });
-  const telemetryID = await getTelemetryID();
-  if (telemetryID) {
-    telemetryEvent.telemetryId.set(telemetryID);
-  }
 }
 
 /**
@@ -65,20 +60,6 @@ export function initTelemetryListeners() {
 
     if (IS_FIREFOX_EXTENSION) {
       startupEvent.externalBrowser.set(await getExternalBrowser());
-    }
-  });
-
-  browser.storage.sync.onChanged.addListener(async (changes) => {
-    if (changes.telemetryEnabled !== undefined) {
-      Glean.setUploadEnabled(changes.telemetryEnabled.newValue);
-      if (changes.telemetryEnabled.newValue) {
-        // Submit the telemetry ID each time telemetry is enabled as
-        // the glean ID is reset each time telemetry is disabled.
-        const telemetryID = await getTelemetryID();
-        if (telemetryID) {
-          telemetryEvent.telemetryId.set(telemetryID);
-        }
-      }
     }
   });
 }
