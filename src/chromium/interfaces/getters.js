@@ -48,19 +48,3 @@ export async function getInstalledFirefoxVariant() {
 
   return undefined;
 }
-
-/**
- * Get the non-greyed icon path for Firefox or Firefox Private.
- *
- * @returns {Promise<string>} The path to the non-greyed icon.
- */
-export async function getDefaultIconPath() {
-  if ((await getExternalBrowser()) === "Firefox") {
-    return {
-      32: browser.runtime.getURL("images/firefox/firefox32.png"),
-    };
-  }
-  return {
-    32: browser.runtime.getURL("images/firefox-private/private32.png"),
-  };
-}
